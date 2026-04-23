@@ -8,7 +8,7 @@ export const description = "Cashbox dashboard page inspired by mobile cashbox ap
 import { ref, computed } from 'vue'
 import DashboardLayout from "@/layout/default.vue"
 import BalanceSectionCards from "@/components/BalanceSectionCards.vue"
-
+import CashboxHeader from "@/components/CashboxHeader.vue"
 // ── State ──────────────────────────────────────────────────────────────────
 const showBalance = ref(true)
 const selectedPeriod = ref<'today' | 'week' | 'month'>('today')
@@ -110,63 +110,35 @@ const fmtShort = (n: number) => {
 }
 
 const netFlow = computed(() => stats.value.todayReceived - stats.value.todayPaid)
+
+// ... rest of your existing state (stats, cashboxItems, sparkData, netFlow) ...
+
+const handlePeriodChange = (period: 'today' | 'week' | 'month') => {
+    selectedPeriod.value = period
+    // Load data for selected period
+}
+
+const toggleBalance = (value: boolean) => {
+    showBalance.value = value
+}
 </script>
 
 <template>
     <DashboardLayout>
+        <!-- ══════════════════════════════════════════════════
+       PAGE HEADER
+  ══════════════════════════════════════════════════ -->
+        <!-- Header -->
+        <CashboxHeader :selected-period="selectedPeriod" :show-balance="showBalance"
+            @update:selectedPeriod="handlePeriodChange" @update:showBalance="toggleBalance" />
+
+        <!-- ══════════════════════════════════════════════════
+        balance Card
+  ══════════════════════════════════════════════════ -->
+        <!-- Cards -->
         <BalanceSectionCards :stats="stats" :show-balance="showBalance" :net-flow="netFlow" />
         <div class="cb-page">
 
-            <!-- ══════════════════════════════════════════════════
-           PAGE HEADER
-      ══════════════════════════════════════════════════ -->
-            <div class="cb-header">
-                <div class="cb-header-left">
-                    <h1 class="cb-title">ক্যাশবক্স <span class="cb-title-en">/ Cashbox</span></h1>
-                    <p class="cb-subtitle">আজকের আর্থিক সারসংক্ষেপ</p>
-                </div>
-                <div class="cb-header-right">
-                    <div class="period-tabs">
-                        <button
-                            v-for="p in [{ id: 'today', label: 'আজ' }, { id: 'week', label: 'সপ্তাহ' }, { id: 'month', label: 'মাস' }]"
-                            :key="p.id" class="period-tab" :class="{ active: selectedPeriod === p.id }"
-                            @click="selectedPeriod = p.id as any">{{ p.label }}</button>
-                    </div>
-                    <button class="cb-btn secondary">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.2">
-                            <polyline points="17 1 21 5 17 9" />
-                            <path d="M3 11V9a4 4 0 0 1 4-4h14" />
-                            <polyline points="7 23 3 19 7 15" />
-                            <path d="M21 13v2a4 4 0 0 1-4 4H3" />
-                        </svg>
-                        মিলাই
-                    </button>
-                    <button class="cb-btn primary">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                            <polyline points="14 2 14 8 20 8" />
-                            <line x1="16" y1="13" x2="8" y2="13" />
-                            <line x1="16" y1="17" x2="8" y2="17" />
-                        </svg>
-                        রিপোর্ট
-                    </button>
-                    <button class="cb-btn icon-only" @click="showBalance = !showBalance">
-                        <svg v-if="showBalance" width="17" height="17" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                            <circle cx="12" cy="12" r="3" />
-                        </svg>
-                        <svg v-else width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path
-                                d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
-                            <line x1="1" y1="1" x2="23" y2="23" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
 
             <!-- ══════════════════════════════════════════════════
            SUMMARY STAT CARDS
