@@ -7,6 +7,7 @@ export const description = "Cashbox dashboard page inspired by mobile cashbox ap
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import DashboardLayout from "@/layout/default.vue"
+import BalanceSectionCards from "@/components/BalanceSectionCards.vue"
 
 // ── State ──────────────────────────────────────────────────────────────────
 const showBalance = ref(true)
@@ -113,6 +114,7 @@ const netFlow = computed(() => stats.value.todayReceived - stats.value.todayPaid
 
 <template>
     <DashboardLayout>
+        <BalanceSectionCards :stats="stats" :show-balance="showBalance" :net-flow="netFlow" />
         <div class="cb-page">
 
             <!-- ══════════════════════════════════════════════════
@@ -169,104 +171,6 @@ const netFlow = computed(() => stats.value.todayReceived - stats.value.todayPaid
             <!-- ══════════════════════════════════════════════════
            SUMMARY STAT CARDS
       ══════════════════════════════════════════════════ -->
-            <div class="stat-grid">
-
-                <div class="stat-card" style="animation-delay:.04s">
-                    <div class="stat-card-top">
-                        <div class="stat-icon-wrap" style="background:#f0fdf4;color:#16a34a">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
-                                <path d="M8 12l3 3 5-5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>
-                        <span class="stat-badge up">+8.4%</span>
-                    </div>
-                    <div class="stat-value">{{ showBalance ? fmt(stats.todaySale) : '••••••' }}</div>
-                    <div class="stat-label">আজকের বেচা <em>Today's Sale</em></div>
-                </div>
-
-                <div class="stat-card" style="animation-delay:.08s">
-                    <div class="stat-card-top">
-                        <div class="stat-icon-wrap" style="background:#eff6ff;color:#2563eb">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <rect x="2" y="6" width="20" height="12" rx="2" />
-                                <circle cx="12" cy="12" r="3" />
-                                <path d="M6 12h.01M18 12h.01" />
-                            </svg>
-                        </div>
-                        <span class="stat-badge" style="background:#dbeafe;color:#2563eb">ব্যালেন্স</span>
-                    </div>
-                    <div class="stat-value" style="color:#2563eb">{{ showBalance ? fmt(stats.currentCash) : '••••••' }}
-                    </div>
-                    <div class="stat-label">বর্তমান ক্যাশ <em>Current Cash</em></div>
-                </div>
-
-                <div class="stat-card" style="animation-delay:.12s">
-                    <div class="stat-card-top">
-                        <div class="stat-icon-wrap" style="background:#f0fdf4;color:#16a34a">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M12 19V5M5 12l7 7 7-7" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>
-                        <span class="stat-badge up">আদায়</span>
-                    </div>
-                    <div class="stat-value" style="color:#16a34a">{{ showBalance ? fmt(stats.todayReceived) : '••••••'
-                        }}</div>
-                    <div class="stat-label">আজ পেলাম <em>Received Today</em></div>
-                </div>
-
-                <div class="stat-card" style="animation-delay:.16s">
-                    <div class="stat-card-top">
-                        <div class="stat-icon-wrap" style="background:#fef2f2;color:#dc2626">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M12 5v14M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>
-                        <span class="stat-badge down">দেনা</span>
-                    </div>
-                    <div class="stat-value" style="color:#dc2626">{{ showBalance ? fmt(stats.todayPaid) : '••••••' }}
-                    </div>
-                    <div class="stat-label">আজ দিলাম <em>Paid Today</em></div>
-                </div>
-
-                <div class="stat-card" style="animation-delay:.20s">
-                    <div class="stat-card-top">
-                        <div class="stat-icon-wrap" style="background:#fefce8;color:#d97706">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <line x1="12" y1="2" x2="12" y2="22" />
-                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                            </svg>
-                        </div>
-                        <span class="stat-badge" :class="netFlow >= 0 ? 'up' : 'down'">নেট</span>
-                    </div>
-                    <div class="stat-value" :style="{ color: netFlow >= 0 ? '#16a34a' : '#dc2626' }">
-                        {{ showBalance ? fmt(Math.abs(netFlow)) : '••••••' }}
-                    </div>
-                    <div class="stat-label">নেট প্রবাহ <em>Net Flow</em></div>
-                </div>
-
-                <div class="stat-card" style="animation-delay:.24s">
-                    <div class="stat-card-top">
-                        <div class="stat-icon-wrap" style="background:#fff7ed;color:#ea580c">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <circle cx="12" cy="12" r="10" />
-                                <polyline points="12 6 12 12 16 14" />
-                            </svg>
-                        </div>
-                        <span class="stat-badge warn">বাকি</span>
-                    </div>
-                    <div class="stat-value" style="color:#ea580c">{{ showBalance ? fmt(stats.dueCollection) : '••••••'
-                        }}</div>
-                    <div class="stat-label">বাকি আদায় <em>Due Collection</em></div>
-                </div>
-
-            </div>
 
             <!-- ══════════════════════════════════════════════════
            CASHBOX ITEMS TABLE
@@ -343,7 +247,7 @@ const netFlow = computed(() => stats.value.todayReceived - stats.value.todayPaid
                                 <td class="td-amount">
                                     <span class="amount-val" :class="item.type">
                                         {{ item.type === 'income' ? '+' : '−' }}{{ showBalance ? fmt(item.amount) :
-                                        '••••••' }}
+                                            '••••••' }}
                                     </span>
                                     <span class="amount-short">{{ fmtShort(item.amount) }}</span>
                                 </td>
