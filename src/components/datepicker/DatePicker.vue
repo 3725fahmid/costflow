@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { DateValue } from '@internationalized/date'
-import { DateFormatter, getLocalTimeZone, today } from '@internationalized/date'
+import { DateFormatter, CalendarDate, fromDate, getLocalTimeZone, today } from '@internationalized/date'
 
 import { CalendarIcon } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
@@ -51,7 +51,8 @@ const value = computed({
 
         <PopoverContent class="w-auto p-0" align="start">
             <Calendar v-model="value" :default-placeholder="defaultPlaceholder" layout="month-and-year" initial-focus
-                @update:model-value="close" />
+                @update:model-value="close" :min-value="new CalendarDate(2000, 1, 1)"
+                :max-value="new CalendarDate(2035, 1, 1)" />
         </PopoverContent>
     </Popover>
 </template>

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import DatePicker from '@/components/datepicker/DatePicker.vue'
 import type { DateValue } from '@internationalized/date'
 
-const date = ref<DateValue | null>(null)
+const date = ref<string | null>(null)
 </script>
 
 <template>
