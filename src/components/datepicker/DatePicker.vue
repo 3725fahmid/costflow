@@ -31,6 +31,12 @@ const value = computed({
     get: () => props.modelValue,
     set: (val) => emit('update:modelValue', val),
 })
+
+const toDay = new CalendarDate(
+    new Date().getFullYear(),
+    new Date().getMonth() + 1,
+    new Date().getDate()
+);
 </script>
 
 <template>
@@ -51,8 +57,7 @@ const value = computed({
 
         <PopoverContent class="w-auto p-0" align="start">
             <Calendar v-model="value" :default-placeholder="defaultPlaceholder" layout="month-and-year" initial-focus
-                @update:model-value="close" :min-value="new CalendarDate(2000, 1, 1)"
-                :max-value="new CalendarDate(2035, 1, 1)" />
+                @update:model-value="close" :min-value="new CalendarDate(2000, 1, 1)" :max-value="toDay" />
         </PopoverContent>
     </Popover>
 </template>
