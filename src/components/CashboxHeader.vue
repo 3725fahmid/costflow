@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
 import { Eye, EyeOff, FileText, Scale } from 'lucide-vue-next'
-import { Card } from './ui/card';
 
 interface Props {
     selectedPeriod: 'today' | 'week' | 'month'
@@ -23,61 +22,71 @@ const periods = [
 </script>
 
 <template>
-    <div
-        class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 px-6 py-6 lg:px-8 border-b border-border bg-gradient-to-r from-background/50 to-muted/50 backdrop-blur-sm sticky top-0 z-50">
-        <!-- Left -->
-        <div class="max-w-md">
-            <h1
-                class="text-3xl lg:text-4xl font-black bg-gradient-to-r from-foreground to-primary/80 bg-clip-text text-transparent mb-1.5 leading-tight">
-                ক্যাশবক্স
-                <span class="block text-xl font-light text-muted-foreground -mt-1 tracking-wide">
-                    / Cashbox
-                </span>
-            </h1>
+    <header class="w-full border-b border-border bg-background/95 backdrop-blur-sm sticky top-0 z-50">
+        <div class="px-4 sm:px-6 lg:px-8 py-4">
 
-            <p class="text-lg font-medium text-muted-foreground leading-relaxed">
-                আজকের আর্থিক সারসংক্ষেপ
-            </p>
-        </div>
+            <!-- Top row: Brand + Icon Actions -->
+            <div class="flex items-center justify-between gap-3">
 
-        <!-- Right -->
-        <div class="flex items-center gap-3 flex-wrap">
+                <!-- Brand -->
+                <div class="flex items-baseline gap-2 min-w-0">
+                    <h1 class="text-2xl sm:text-3xl font-black text-foreground leading-none tracking-tight truncate">
+                        ক্যাশবক্স
+                    </h1>
+                    <span class="text-sm font-light text-muted-foreground hidden sm:inline tracking-widest uppercase">
+                        Cashbox
+                    </span>
+                </div>
 
-            <!-- Period Tabs -->
-            <div class="flex bg-muted/50 rounded-full p-1 border border-border/50 w-full sm:w-auto">
-                <Button v-for="p in periods" :key="p.id" variant="ghost" size="sm"
-                    class="h-10 px-3 py-2 flex-1 text-xs font-semibold rounded-full transition-all" :class="{
-                        'bg-primary text-primary-foreground shadow-sm': props.selectedPeriod === p.id
-                    }" @click="emit('update:selectedPeriod', p.id)">
-                    {{ p.label }}
-                </Button>
+                <!-- Icon actions — always visible, compact -->
+                <div class="flex items-center gap-2 shrink-0">
+
+                    <!-- Balance visibility toggle -->
+                    <Button variant="ghost" size="icon"
+                        class="h-9 w-9 rounded-lg border border-border/60 hover:bg-muted hover:border-border transition-colors"
+                        @click="emit('update:showBalance', !props.showBalance)"
+                        :aria-label="props.showBalance ? 'Hide balance' : 'Show balance'">
+                        <Eye v-if="props.showBalance" class="h-4 w-4 text-muted-foreground" />
+                        <EyeOff v-else class="h-4 w-4 text-muted-foreground" />
+                    </Button>
+
+                    <!-- Reconcile — label hidden on xs -->
+                    <Button variant="outline" size="sm"
+                        class="h-9 px-2.5 sm:px-3 border-border/60 hover:bg-muted hover:border-border transition-colors">
+                        <Scale class="h-4 w-4 shrink-0" />
+                        <span class="hidden sm:inline ml-1.5 text-xs font-medium">মিলাই</span>
+                    </Button>
+
+                    <!-- Report — always shows label on sm+ -->
+                    <Button size="sm" class="h-9 px-2.5 sm:px-3 transition-all">
+                        <FileText class="h-4 w-4 shrink-0" />
+                        <span class="hidden sm:inline ml-1.5 text-xs font-semibold">রিপোর্ট</span>
+                    </Button>
+
+                </div>
             </div>
 
-            <!-- Balance Toggle -->
-            <Button variant="ghost" size="sm"
-                class="h-10 w-10 p-0 rounded-xl hover:bg-muted/50 border border-border/50 shadow-sm"
-                @click="emit('update:showBalance', !props.showBalance)">
-                <Eye v-if="props.showBalance" class="h-4 w-4" />
-                <EyeOff v-else class="h-4 w-4" />
-            </Button>
+            <!-- Bottom row: subtitle + period tabs -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-3">
 
-            <!-- Balance Button -->
-            <Button variant="outline" size="sm"
-                class="h-10 px-3 text-xs font-medium border-border/50 hover:bg-muted/50 hover:border-border">
-                <Scale class="h-4 w-4 mr-1.5" />
-                মিলাই
-            </Button>
+                <!-- Subtitle -->
+                <p class="text-sm font-medium text-muted-foreground leading-none">
+                    আজকের আর্থিক সারসংক্ষেপ
+                </p>
 
-            <!-- Report Button -->
-            <Button size="sm" class="h-10 px-3 text-xs font-semibold shadow-sm hover:shadow-md transition-all">
-                <FileText class="h-4 w-4 mr-1.5" />
-                রিপোর্ট
-            </Button>
+                <!-- Period tabs — full width on xs, auto on sm+ -->
+                <div class="flex bg-muted/60 rounded-lg p-1 border border-border/50 w-full sm:w-auto">
+                    <Button v-for="p in periods" :key="p.id" variant="ghost" size="sm"
+                        class="flex-1 sm:flex-none h-8 px-4 sm:px-5 text-xs font-semibold rounded-md transition-all duration-150"
+                        :class="props.selectedPeriod === p.id
+                            ? 'bg-background text-foreground shadow-sm border border-border/60'
+                            : 'text-muted-foreground hover:text-foreground hover:bg-background/50'"
+                        @click="emit('update:selectedPeriod', p.id)">
+                        {{ p.label }}
+                    </Button>
+                </div>
 
+            </div>
         </div>
-    </div>
+    </header>
 </template>
-
-<style scoped>
-/* ✅ Empty on purpose — no Tailwind @apply here */
-</style>

@@ -114,7 +114,7 @@ const statCards = [
 </script>
 
 <template>
-    <div class="grid grid-cols-2 gap-1 px-1 lg:px-1 @xl/main:grid-cols-3 @5xl/main:grid-cols-4">
+    <div class="grid grid-cols-1 gap-1 px-1 lg:px-1 @xl/main:grid-cols-3 @5xl/main:grid-cols-4">
         <Card v-for="(card, index) in statCards" :key="card.title" class="@container/card"
             :style="{ 'animation-delay': `${index * 0.04}s` }">
             <CardHeader>
