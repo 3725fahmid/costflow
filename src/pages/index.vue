@@ -7,20 +7,24 @@
 definePageMeta({ layout: 'default' })
 import DashboardLayout from "@/layout/default.vue"
 import { Button } from "@/components/ui/button"
+import DatePicker from '@/components/datepicker/DatePicker.vue'
+import type { DateValue } from '@internationalized/date'
+
+const date = ref<DateValue | null>(null)
 </script>
 
 <template>
     <DashboardLayout>
-        <!-- Optional: inject a page-specific button into the header -->
-        <template #header-actions>
-            <Button variant="outline" size="sm">Save changes</Button>
-        </template>
-
         <!-- Page content -->
         <div class="px-4 lg:px-6">
             <h1 class="text-2xl font-semibold mb-6">Welcome Page</h1>
             <ThemeToggle />
             <!-- your settings sections here -->
+        </div>
+
+        <div class="grid gap-2">
+            <Label>Date</Label>
+            <DatePicker v-model="date" />
         </div>
     </DashboardLayout>
 </template>
