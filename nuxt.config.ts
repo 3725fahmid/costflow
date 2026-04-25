@@ -3,6 +3,11 @@ import { fileURLToPath } from "url";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      apiBase: process.env.NUXT_PUBLIC_API_BASE
+    }
+  },
   alias: {
     public: fileURLToPath(new URL("./public/", import.meta.url)),
     constants: fileURLToPath(new URL("./constants/", import.meta.url)),
