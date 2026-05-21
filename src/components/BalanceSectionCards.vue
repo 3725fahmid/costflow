@@ -114,18 +114,18 @@ const statCards = [
 </script>
 
 <template>
-    <div class="grid grid-cols-1 gap-1 px-1 lg:px-1 @xl/main:grid-cols-3 @5xl/main:grid-cols-4">
+    <div
+        class="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-1 px-1 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-1 @xl/main:grid-cols-3 @5xl/main:grid-cols-4">
         <Card v-for="(card, index) in statCards" :key="card.title" class="@container/card"
             :style="{ 'animation-delay': `${index * 0.04}s` }">
             <CardHeader>
-                <CardDescription class="stat-label">
+                <CardDescription class="stat-label" :style="{ color: card.valueColor }">
                     {{ card.title }} <em>{{ card.titleEn }}</em>
                 </CardDescription>
-                <CardTitle class="stat-value text-xl font-semibold tabular-nums @[250px]/card:text-xl"
-                    :style="{ color: card.valueColor }">
+                <CardTitle class="text-xl font-semibold tabular-nums @[250px]/card:text-xl">
                     {{ props.showBalance ? fmt(card.value) : '••••••' }}
                 </CardTitle>
-                <CardAction>
+                <!-- <CardAction>
                     <Badge variant="outline" :class="card.badgeClass" :style="{
                         backgroundColor: card.bg,
                         color: card.color,
@@ -135,7 +135,7 @@ const statCards = [
                             class="size-4" />
                         {{ card.badge }}
                     </Badge>
-                </CardAction>
+                </CardAction> -->
             </CardHeader>
         </Card>
     </div>

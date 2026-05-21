@@ -128,9 +128,9 @@ const toggleBalance = (value: boolean) => {
         <!-- ══════════════════════════════════════════════════
        PAGE HEADER
   ══════════════════════════════════════════════════ -->
-        <!-- Header -->
+        <!-- Header
         <CashboxHeader :selected-period="selectedPeriod" :show-balance="showBalance"
-            @update:selectedPeriod="handlePeriodChange" @update:showBalance="toggleBalance" />
+            @update:selectedPeriod="handlePeriodChange" @update:showBalance="toggleBalance" /> -->
 
         <!-- ══════════════════════════════════════════════════
         balance Card
